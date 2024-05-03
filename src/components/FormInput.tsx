@@ -1,40 +1,59 @@
-import React, { ChangeEvent, FC } from 'react';
-import styles from '../styles/FormInput.module.css';
+import React, { ChangeEvent, FC, ReactNode } from 'react';
+import styled from 'styled-components';
+import ErrorMessage from './ErrorMessage';
+import Input from './Input';
+import InputLabel from './InputLabel';
+import IconButton from './IconButton';
+
+const InputBox = styled.div`
+  display: flex;
+  position: relative;
+  gap: var(--spacing-1);
+  flex-direction: column;
+`;
 
 type Props = {
   type?: string;
   label: string;
+  value: string;
   error?: string;
+  icon: ReactNode;
   required?: boolean;
-  value: string | number;
+  placeholder: string;
+  onViewPassword?: () => void;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const FormInput: FC<Props> = ({
   type = 'text',
+  icon,
   label,
   value,
   error,
   onChange,
+  placeholder,
   required = false,
+  onViewPassword,
 }) => {
   return (
-    <div className={styles.inputBox}>
-      <label className={styles.inputLabel} htmlFor={value as string}>
-        {label}
-        {required && ' *'}
-      </label>
-      <input
+    <InputBox>
+      <InputLabel htmlFor={value as string} label={label} required={required} />
+      <Input
         type={type}
         value={value}
+        error={error}
+        ariaLabel={label}
         required={required}
         onChange={onChange}
-        id={value as string}
-        className={styles.input}
-        aria-label={`${label} input field`}
+        placeholder={placeholder}
       />
-      {error && <p className={styles.inputP}>{error}</p>}
-    </div>
+      <IconButton
+        icon={icon}
+        onClick={onViewPassword ? onViewPassword : () => console.log()}
+      />
+
+      {error && <ErrorMessage error={error} />}
+    </InputBox>
   );
 };
 
