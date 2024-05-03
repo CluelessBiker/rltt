@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* GLOBAL STYLES */
+:root {
+    /* COLOURS */
+    --palette-primary-blue: #67BD8F;
+    --palette-primary-green: #D5D547;
+    --palette-primary-orange: #F58B12;
+    --palette-primary-red: #DB422D;
+    --palette-primary-purple: #895567;
+    --palette-primary-cotton: #FBFBF9;
+    --palette-primary-white: #FFFFFF;
+    --palette-primary-darkGrey: #161a1d;
+
+    /* SPACING */
+    --spacing-1: 8px;
+    --spacing-2: 16px;
+
+    /* FONTSIZE */
+    --typography-size-caption: 12px;
+    --typography-size-title: 20px;
+    --typography-size-title-lg: 30px;
+    --typography-size-title-exLg: 40px;
+
+    /* FONT WEIGHT */
+    --typography-weight-ultra-light: 200;
+    --typography-weight-light: 300;
+    --typography-weight-regular: 400;
+    --typography-weight-bold: 600;
+
+    /* TYPOGRAPHY */
+    --typography-face-primary: "Montserrat", sans-serif;
+}
+
+/*TYPOGRAPHY*/
+h1, h2, h3, h4, h5, h6, p {
+    color: var(--palette-primary-darkGrey);
+    font-family: var(--typography-face-primary);
+}
+
+h2 {
+    font-weight: var(--typography-weight-bold);
+    font-size: var(--typography-size-title-exLg);
+}
+
+/* SITE CONTAINER */
+.bodyContainer {
+    flex: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--palette-primary-cotton);
+}
