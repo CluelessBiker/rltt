@@ -8,4 +8,7 @@ export const ContentContainer = styled.div`
   padding: var(--spacing-2);
   border-radius: var(--spacing-2);
   background-color: var(--palette-primary-white);
+  &.outlined {
+    border: 2px solid var(--palette-primary-green);
+  }
 `;
