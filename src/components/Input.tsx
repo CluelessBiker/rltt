@@ -6,6 +6,7 @@ interface InputProps {
 }
 
 const StyledInput = styled.input<InputProps>`
+  flex: 1;
   padding: var(--spacing-1);
   padding-left: 37px;
   border-radius: var(--spacing-1);
@@ -13,17 +14,27 @@ const StyledInput = styled.input<InputProps>`
   font-size: var(--typography-size-caption);
   caret-color: var(--palette-primary-green);
   font-family: var(--typography-face-primary);
-  border: 1px solid var(--palette-primary-purple);
   border: ${(props) =>
     props.error
       ? '2px solid var(--palette-primary-red)'
-      : '1px solid var(--palette-primary-purple)'};
+      : '2px solid var(--palette-primary-purple)'};
+  &.search {
+    width: 100%;
+    padding: var(--spacing-1);
+    border-radius: var(--spacing-2);
+    border: 2px solid var(--palette-primary-green);
+  }
+  &.todo {
+    padding: var(--spacing-1);
+    border: 2px solid var(--palette-primary-blue);
+  }
 `;
 
 type Props = {
   type?: string;
   value: string;
   error?: string;
+  variant?: string;
   ariaLabel: string;
   required?: boolean;
   placeholder: string;
@@ -34,6 +45,7 @@ const Input: FC<Props> = ({
   type = 'text',
   value,
   error,
+  variant,
   onChange,
   ariaLabel,
   required = false,
@@ -43,6 +55,7 @@ const Input: FC<Props> = ({
     <StyledInput
       type={type}
       value={value}
+      className={variant}
       required={required}
       onChange={onChange}
       id={value as string}
