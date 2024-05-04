@@ -53,8 +53,16 @@ h2 {
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: relative;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     background-color: var(--palette-primary-cotton);
+}
+
+/*LOGOUT BUTTON*/
+.logoutButton {
+    top: 20px;
+    right: 20px;
+    position: absolute;
 }
