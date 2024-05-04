@@ -44,7 +44,7 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
-    if (login.password.length < 4 && login.password.length > 16) {
+    if (login.password.length > 4 && login.password.length < 16) {
       setErrors({});
       handleAPIRequest();
     }
