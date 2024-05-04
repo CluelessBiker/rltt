@@ -1,5 +1,5 @@
 ## ARTISTIC DEVIATIONS :
-
+- *'Email'* has been changes to *'Username'* on the login screen to reflect the dummy API used
 - eye icon inserted into the password field instead of a lock : I wanted to add a view-password feature
 - magnifying glass icon on right of search field : mockups show left, but instructions were not explicit as with prior inputs -I chose the path that was aesthetically pleasing to me-
 
