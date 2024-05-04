@@ -8,15 +8,29 @@ const StyledButton = styled.button`
   border: none;
   position: absolute;
   background-color: transparent;
+  &.secondary {
+    position: static;
+  }
+  &.search {
+    top: 5px;
+    right: 11px;
+    width: 20px;
+    left: initial;
+  }
 `;
 
 type Props = {
   icon: ReactNode;
+  variant?: string;
   onClick: () => void;
 };
 
-const IconButton: FC<Props> = ({ icon, onClick }) => {
-  return <StyledButton onClick={onClick}>{icon}</StyledButton>;
+const IconButton: FC<Props> = ({ icon, onClick, variant }) => {
+  return (
+    <StyledButton className={variant} onClick={onClick}>
+      {icon}
+    </StyledButton>
+  );
 };
 
 export default IconButton;
