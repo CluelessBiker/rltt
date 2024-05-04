@@ -22,7 +22,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     window.addEventListener('keydown', handleEnter);
-    window.addEventListener('keydown', handleEnter);
     return () => window.removeEventListener('keydown', handleEnter);
   }, []);
 
@@ -38,20 +37,25 @@ const LoginPage = () => {
   };
 
   const handleEnter = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') handleLogin();
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLogin();
+    }
   };
 
   const handleLogin = () => {
-    if (login.password.length < 4) {
-      setErrors({ password: 'Password too short' });
-    } else if (login.password.length > 16) {
-      setErrors({ password: 'Password too long' });
-      //TODO: COMMENTED OUT AS DUMMY API DOES NOT USE EMAIL
-      // } else if (!login.username.includes('@')) {
-      //   setErrors({ username: 'Please enter a valid email address' });
-    } else {
+    if (login.password.length < 4 && login.password.length > 16) {
       setErrors({});
       handleAPIRequest();
+    }
+    //TODO: COMMENTED OUT AS DUMMY API DOES NOT USE EMAIL
+    // if (!login.username.includes('@')) {
+    //   setErrors({ username: 'Please enter a valid email address' }); return
+    if (login.password.length < 4) {
+      setErrors({ password: 'Password too short' });
+    }
+    if (login.password.length > 16) {
+      setErrors({ password: 'Password too long' });
     }
   };
 
