@@ -23,50 +23,48 @@ const LoginPage = () => {
   useEffect(() => {
     window.addEventListener('keydown', handleEnter);
     return () => window.removeEventListener('keydown', handleEnter);
-  }, []);
+  }, [login]);
 
   const onChange = (
     fieldName: string,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event?.target.value;
+    let newErrors = { ...errors };
+
+    switch (fieldName) {
+      case 'username':
+        if (value.length > 50) {
+          newErrors = {
+            ...newErrors,
+            username: 'Username exceeds character limit',
+          };
+        } else {
+          delete newErrors.username;
+        }
+        break;
+      case 'password':
+        if (value.length < 4) {
+          newErrors = { ...newErrors, password: 'Password too short' };
+        } else if (value.length > 16) {
+          newErrors = { ...newErrors, password: 'Password too long' };
+        } else {
+          delete newErrors.password;
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
+
     setLogin((oldValue) => ({
       ...oldValue,
       [fieldName]: value,
     }));
   };
 
-  const handleEnter = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleLogin();
-    }
-  };
-
-  const handleLogin = () => {
-    if (
-      login.password.length > 4 &&
-      login.password.length < 16 &&
-      login.username.length < 50
-    ) {
-      setErrors({});
-      handleAPIRequest();
-    }
-    //TODO: COMMENTED OUT AS DUMMY API DOES NOT USE EMAIL
-    // if (!login.username.includes('@')) {
-    //   setErrors({ username: 'Please enter a valid email address' }); return
-    if (login.username.length > 50) {
-      setErrors({ username: 'Username cannot exceed 50 characters' });
-    }
-    if (login.password.length < 4) {
-      setErrors({ password: 'Password too short' });
-    }
-    if (login.password.length > 16) {
-      setErrors({ password: 'Password too long' });
-    }
-  };
-
-  const handleAPIRequest = async () => {
+  const handleLogin = async () => {
     try {
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
@@ -85,6 +83,13 @@ const LoginPage = () => {
       }
     } catch (error: any) {
       setErrors({ error: error.message });
+    }
+  };
+
+  const handleEnter = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLogin();
     }
   };
 
@@ -128,7 +133,12 @@ const LoginPage = () => {
       <Button
         text={'sign in'}
         onClick={handleLogin}
-        disabled={login.username === '' || login.password === ''}
+        disabled={
+          login.username === '' ||
+          login.password === '' ||
+          errors['username'] !== undefined ||
+          errors['password'] !== undefined
+        }
       />
 
       <ErrorMessage align={'center'} error={handleError('error')} />
