@@ -1,5 +1,5 @@
 ## ARTISTIC DEVIATIONS :
-- *'Email'* has been changes to *'Username'* on the login screen to reflect the dummy API used
+- *'Email'* has been changed to *'Username'* on the login screen to reflect the dummy API used
 - eye icon inserted into the password field instead of a lock : I wanted to add a view-password feature
 - magnifying glass icon on right of search field : mockups show left, but instructions were not explicit as with prior inputs -I chose the path that was aesthetically pleasing to me-
 
@@ -10,6 +10,9 @@
 - Keypress `enter` on the signin screen prompts the error message *Password too short*
 - console logging out the length of the password shows it exceeds the 4 character restriction
 - reorganising the if statements also does not resolve the issue
+- moved validation into onChange. Upon hitting enter, a request is made to the API, however the username/password are both coming up as empty strings so the request fails
+- console logging out the login shows both fields to be populated
+- issue was resolved by adding `login` to useEffect dependency array
 
 ## TIME BREAKDOWN :
 Approximately 6-8 hours was spent on this test over the course of 3 days at a leisurely pace.
@@ -19,9 +22,13 @@ Approximately 6-8 hours was spent on this test over the course of 3 days at a le
 
 ## DUMMY API CREDENTIALS :
 ```
-const dummyApi = {
-  username: 'kminchelle',
-  password: '0lelplR',
-  expiresInMins: 30,
-};
+username: 'kminchelle',
+password: '0lelplR',
+```
+
+## PROVIDED API CREDS :
+```
+endpoint: 'http://dev.rapptrlabs.com/Tests/scripts/user-login.php',
+username: 'test@rapptrlabs.com',
+password: 'Test123.',
 ```
