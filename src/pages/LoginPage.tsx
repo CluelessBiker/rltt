@@ -15,8 +15,8 @@ const LoginPage = () => {
 
   const [errors, setErrors] = useState<any>({});
   const [viewPass, setViewPass] = useState<boolean>(false);
-  const [login, setLogin] = useState<{ username: string; password: string }>({
-    username: '',
+  const [login, setLogin] = useState<{ email: string; password: string }>({
+    email: '',
     password: '',
   });
 
@@ -44,13 +44,13 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
-    if (login.password.length < 4 && login.password.length > 16) {
+    if (login.password.length > 4 && login.password.length < 16) {
       setErrors({});
       handleAPIRequest();
     }
-    //TODO: COMMENTED OUT AS DUMMY API DOES NOT USE EMAIL
-    // if (!login.username.includes('@')) {
-    //   setErrors({ username: 'Please enter a valid email address' }); return
+    if (!login.email.includes('@')) {
+      setErrors({ email: 'Please enter a valid email address' });
+    }
     if (login.password.length < 4) {
       setErrors({ password: 'Password too short' });
     }
@@ -61,11 +61,14 @@ const LoginPage = () => {
 
   const handleAPIRequest = async () => {
     try {
-      const response = await fetch('https://dummyjson.com/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(login),
-      });
+      const response = await fetch(
+        'http://dev.rapptrlabs.com/Tests/scripts/user-login.php',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(login),
+        },
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch');
@@ -92,13 +95,13 @@ const LoginPage = () => {
       <h2>Rapptr Labs</h2>
       <FormInput
         required
-        type={'username'}
-        label={'username'}
-        value={login.username}
-        error={handleError('username')}
+        type={'email'}
+        label={'email'}
+        value={login.email}
+        error={handleError('email')}
         placeholder={'user@rapptrlabs.com'}
         icon={<IconAccount color={'var(--palette-primary-green)'} />}
-        onChange={(value) => onChange('username', value)}
+        onChange={(value) => onChange('email', value)}
       />
       <FormInput
         required
@@ -121,7 +124,7 @@ const LoginPage = () => {
       <Button
         text={'sign in'}
         onClick={handleLogin}
-        disabled={login.username === '' || login.password === ''}
+        disabled={login.email === '' || login.password === ''}
       />
 
       <ErrorMessage align={'center'} error={handleError('error')} />
