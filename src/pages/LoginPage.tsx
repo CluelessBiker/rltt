@@ -20,6 +20,8 @@ const LoginPage = () => {
     password: '',
   });
 
+  console.log(errors);
+
   useEffect(() => {
     window.addEventListener('keydown', handleEnter);
     return () => window.removeEventListener('keydown', handleEnter);
@@ -30,6 +32,34 @@ const LoginPage = () => {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event?.target.value;
+    let newErrors = { ...errors };
+
+    switch (fieldName) {
+      case 'email':
+        if (!value.includes('@')) {
+          newErrors = {
+            ...newErrors,
+            email: 'Please enter a valid email address',
+          };
+        } else {
+          delete newErrors.email;
+        }
+        break;
+      case 'password':
+        if (value.length < 4) {
+          newErrors = { ...newErrors, password: 'Password too short' };
+        } else if (value.length > 16) {
+          newErrors = { ...newErrors, password: 'Password too long' };
+        } else {
+          delete newErrors.password;
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
+
     setLogin((oldValue) => ({
       ...oldValue,
       [fieldName]: value,
@@ -43,23 +73,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleLogin = () => {
-    if (login.password.length > 4 && login.password.length < 16) {
-      setErrors({});
-      handleAPIRequest();
-    }
-    if (!login.email.includes('@')) {
-      setErrors({ email: 'Please enter a valid email address' });
-    }
-    if (login.password.length < 4) {
-      setErrors({ password: 'Password too short' });
-    }
-    if (login.password.length > 16) {
-      setErrors({ password: 'Password too long' });
-    }
-  };
-
-  const handleAPIRequest = async () => {
+  const handleLogin = async () => {
     try {
       const response = await fetch(
         'http://dev.rapptrlabs.com/Tests/scripts/user-login.php',
@@ -124,7 +138,12 @@ const LoginPage = () => {
       <Button
         text={'sign in'}
         onClick={handleLogin}
-        disabled={login.email === '' || login.password === ''}
+        disabled={
+          login.email === '' ||
+          login.password === '' ||
+          errors['email'] !== undefined ||
+          errors['password'] !== undefined
+        }
       />
 
       <ErrorMessage align={'center'} error={handleError('error')} />
